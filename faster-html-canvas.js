@@ -37,14 +37,14 @@ export class PZcanvas {
 
   resize () {
     const { canvas, shadowCanvas } = this
-    if (canvas.width > shadowCanvas.width) shadowCanvas.width = canvas.width
-    if (canvas.height > shadowCanvas.height) shadowCanvas.height = canvas.height
+    let mustUpdate = false
+    if (canvas.width > shadowCanvas.width) mustUpdate = shadowCanvas.width = canvas.width
+    if (canvas.height > shadowCanvas.height) mustUpdate = shadowCanvas.height = canvas.height
     this.refX = Math.round(this.refX - (canvas.width - this.width) / 2)
     this.refY = Math.round(this.refY - (canvas.height - this.height) / 2)
     this.width = canvas.width
     this.height = canvas.height
-    if (this.pan(-1, -1, false) || this.pan(1, 1, false)) return
-    this.update()
+    if (!this.pan(-1, -1, false) && !this.pan(1, 1, false) && mustUpdate) this.update()
   }
 
   addNewDrawing (func) {
